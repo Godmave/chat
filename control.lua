@@ -57,6 +57,8 @@ local function addMessage(table, row)
     x.read_only = true
     x.style.horizontally_stretchable = true
     x.style.vertically_stretchable = true
+
+    table.parent.scroll_to_bottom()
 end
 
 
@@ -242,6 +244,26 @@ end)
 
 script.on_init(function()
     initialize()
+
+    for _, player in pairs(game.players) do
+        local anchorpoint = mod_gui.get_button_flow(player)
+        local button = anchorpoint["chat"]
+
+        if button then
+            button.destroy()
+            button = nil
+        end
+
+        if not button then
+            button = anchorpoint.add{
+                type = "sprite-button",
+                name = "chat",
+                sprite = "utility/tick_custom",
+                style = mod_gui.button_style
+            }
+        end
+    end
+
 end)
 
 script.on_event(defines.events.on_console_chat, function(event)
